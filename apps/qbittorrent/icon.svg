@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <!-- SPDX-License-Identifier: AGPL-3.0-only -->
+  <title id="title">Torrent exchange</title>
+  <desc id="desc">Original Nex catalogue illustration, not an official qBittorrent logo. A blue download arrow and coral upload arrow above a violet tray.</desc>
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="#142345"/>
+  <circle cx="94" cy="30" r="12" fill="#ffd166"/>
+  <path d="M40 27v45m-15-15 15 15 15-15" fill="none" stroke="#42d9ee" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M85 78V47m-14 14 14-14 14 14" fill="none" stroke="#ff797f" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M24 88v16h80V88" fill="none" stroke="#b6a0ff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
