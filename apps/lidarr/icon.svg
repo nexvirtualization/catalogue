@@ -1,0 +1,12 @@
+<!-- SPDX-License-Identifier: AGPL-3.0-only; original unofficial Nex catalogue artwork -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">Original music library icon for Lidarr</title>
+  <rect x="4" y="4" width="120" height="120" rx="26" fill="#37285b"/>
+  <rect x="23" y="27" width="9" height="75" rx="3" fill="#ffbd69"/>
+  <rect x="37" y="20" width="9" height="82" rx="3" fill="#f777a4"/>
+  <path d="M52 26h51v76H52z" fill="#8061c5"/>
+  <path d="M58 32h39v64H58z" fill="#a28bd9"/>
+  <path d="M85 41v36" stroke="#fff3d5" stroke-width="7" stroke-linecap="round"/>
+  <path d="m85 41 12 7v13l-12-7z" fill="#fff3d5"/>
+  <ellipse cx="76" cy="80" rx="12" ry="9" transform="rotate(-20 76 80)" fill="#69e1ca"/>
+</svg>

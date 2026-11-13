@@ -1,0 +1,44 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+x-nex:
+  name: Lidarr
+  summary: Organize and manage a music library
+  description: >-
+    Music library manager. For integrated downloads, select the same existing DATA folder on a share as the downloader, or use arr-suite.
+  category: media
+  website: https://lidarr.audio
+  source: https://github.com/Lidarr/Lidarr
+  license: GPL-3.0-only
+  scalable: false
+  options:
+    CONFIG:
+      label: Settings storage
+      help: Persistent settings and database. Keep writable by the selected PUID and PGID; prefer This host for the database.
+    DATA:
+      label: Music and downloads
+      help: Music and staged downloads under /data/music and /data/downloads. For shared media, select the same existing folder on the same share in each app.
+    PORT:
+      label: Web port
+      help: Use an unused port. Configure application authentication before allowing access beyond a trusted network.
+    PUID:
+      label: User ID
+      help: Numeric owner of the application files. Ensure both selected folders are writable by this user or group.
+    PGID:
+      label: Group ID
+      help: Numeric group of the application files. Share permissions must allow this group to write.
+    TZ:
+      label: Time zone
+      help: IANA time zone used for schedules and logs, for example Etc/UTC.
+services:
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:3.1.6.5079-ls48@sha256:a91ef0642c15c9bd7c4260fee98fa99972c61601e37c8a96411d6a9cf0e9ad40
+    environment:
+      PUID: "${PUID:-1000}"
+      PGID: "${PGID:-1000}"
+      TZ: "${TZ:-Etc/UTC}"
+    ports:
+      - "${PORT:-8686}:8686"
+    volumes:
+      - "${CONFIG}:/config"
+      - "${DATA}:/data"
+    deploy:
+      replicas: 1
