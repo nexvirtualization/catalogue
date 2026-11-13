@@ -29,3 +29,21 @@ jobs:
                   env[variable] = default or '/tmp/catalogue-validation/' + variable.lower()
               subprocess.run(['docker', 'compose', '-f', str(manifest), 'config', '--quiet'], env=env, check=True)
           PY
+
+  publish:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: catalogue-publication
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Publish Nex catalogue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash scripts/publish.sh
