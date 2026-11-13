@@ -1,22 +1,19 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: AGPL-3.0-only
-"""Build, sign and verify the application catalogue's signed bundle.
+"""Build and check the application catalogue bundle's integrity.
 
 The bundle format and the package digest are defined in internal/appcatalogue/catalogue.go; this
 script implements the same definition for the catalogue repository's CI.
 
     catalogue-bundle.py build <repo dir> <out dir> --commit <sha>
-    catalogue-bundle.py sign <out dir> --key <Ed25519 private key PEM>
-    catalogue-bundle.py keygen <private.pem> <public.pub>
-    catalogue-bundle.py verify <out dir> --pub <public.pub>
+    catalogue-bundle.py verify <out dir>
 
 A repository holds apps/<id>/nex.yaml, apps/<id>/icon.svg or icon.png, and optionally
 apps/<id>/screenshots/*. A top-level tested.txt lists the IDs of tested apps, one per line
 (blank lines and # comments are ignored); every other app is listed as untested. build writes
 <out>/index.json and copies screenshots to <out>/apps/<id>/screenshots/; its build time is now,
-or SOURCE_DATE_EPOCH when set. A .pub file holds the base64 raw 32-byte public key Core reads
-from /usr/share/nex/catalogue. Ed25519 signing uses openssl 3; private keys never live in the
-repository.
+or SOURCE_DATE_EPOCH when set. Checksums detect inconsistent contents; they do not
+authenticate the publisher.
 """
 import argparse
 import base64
@@ -26,9 +23,7 @@ import json
 import os
 import re
 import shutil
-import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 INDEX_LIMIT = 16 << 20
@@ -43,7 +38,6 @@ SHA256 = re.compile(r"^[0-9a-f]{64}$")
 SCREENSHOT_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$")
 IMAGE_TYPES = {".png": "png", ".jpg": "jpeg", ".jpeg": "jpeg", ".webp": "webp"}
 LOGO_TYPES = {"icon.svg": "image/svg+xml", "icon.png": "image/png"}
-ED25519_PUBLIC_DER = bytes.fromhex("302a300506032b6570032100")
 
 
 class BundleError(Exception):
@@ -161,49 +155,6 @@ def build(args):
     print(f"built {out / 'index.json'}: {len(apps)} apps, commit {args.commit}")
 
 
-def public_raw(key):
-    der = subprocess.run(["openssl", "pkey", "-in", str(key), "-pubout", "-outform", "DER"],
-                         check=True, capture_output=True).stdout
-    if not der.startswith(ED25519_PUBLIC_DER) or len(der) != 44:
-        raise BundleError(f"an Ed25519 key is required: {key}")
-    return der[-32:]
-
-
-def sign(args):
-    index = Path(args.out) / "index.json"
-    if not Path(args.key).is_file():
-        raise BundleError(f"the signing key does not exist: {args.key}")
-    public_raw(args.key)
-    signature = subprocess.run(["openssl", "pkeyutl", "-sign", "-inkey", args.key, "-rawin", "-in", str(index)],
-                               check=True, capture_output=True).stdout
-    if len(signature) != 64:
-        raise BundleError("signing produced a malformed signature")
-    (Path(args.out) / "index.json.sig").write_text(base64.b64encode(signature).decode() + "\n")
-    print(f"signed {index}")
-
-
-def keygen(args):
-    private, public = Path(args.private), Path(args.public)
-    for path in (private, public):
-        if path.exists():
-            raise BundleError(f"refusing to overwrite {path}")
-    subprocess.run(["openssl", "genpkey", "-algorithm", "ed25519", "-out", str(private)], check=True)
-    private.chmod(0o600)
-    encoded = base64.b64encode(public_raw(private)).decode()
-    public.write_text(encoded + "\n")
-    print(encoded)
-
-
-def read_public(path):
-    try:
-        raw = base64.b64decode(Path(path).read_text().strip(), validate=True)
-    except ValueError:
-        raw = b""
-    if len(raw) != 32:
-        raise BundleError(f"{path} does not hold a base64 raw 32-byte Ed25519 public key")
-    return raw
-
-
 def check_index(body):
     """Validate index.json as Core does, and return it parsed."""
     if len(body) > INDEX_LIMIT:
@@ -246,16 +197,6 @@ def check_index(body):
 def verify(args):
     out = Path(args.out)
     body = (out / "index.json").read_bytes()
-    signature = base64.b64decode((out / "index.json.sig").read_text().strip(), validate=True)
-    with tempfile.TemporaryDirectory() as scratch:
-        der = Path(scratch) / "key.der"
-        der.write_bytes(ED25519_PUBLIC_DER + read_public(args.pub))
-        sig = Path(scratch) / "index.sig"
-        sig.write_bytes(signature)
-        result = subprocess.run(["openssl", "pkeyutl", "-verify", "-pubin", "-keyform", "DER", "-inkey", str(der),
-                                 "-rawin", "-in", str(out / "index.json"), "-sigfile", str(sig)], capture_output=True)
-    if result.returncode != 0:
-        raise BundleError("the signature does not match index.json")
     document = check_index(body)
     for app in document["apps"]:
         for shot in app["screenshots"]:
@@ -275,22 +216,13 @@ def main(argv=None):
     p.add_argument("out")
     p.add_argument("--commit", required=True)
     p.set_defaults(run=build)
-    p = commands.add_parser("sign")
-    p.add_argument("out")
-    p.add_argument("--key", required=True)
-    p.set_defaults(run=sign)
-    p = commands.add_parser("keygen")
-    p.add_argument("private")
-    p.add_argument("public")
-    p.set_defaults(run=keygen)
     p = commands.add_parser("verify")
     p.add_argument("out")
-    p.add_argument("--pub", required=True)
     p.set_defaults(run=verify)
     args = parser.parse_args(argv)
     try:
         args.run(args)
-    except (BundleError, OSError, ValueError, KeyError, TypeError, subprocess.CalledProcessError) as error:
+    except (BundleError, OSError, ValueError, KeyError, TypeError) as error:
         print(f"catalogue-bundle: {error}", file=sys.stderr)
         return 1
     return 0

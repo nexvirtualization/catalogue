@@ -43,7 +43,7 @@ class CatalogueTests(unittest.TestCase):
             self.assertEqual(service['image'], standalone['services'][name]['image'])
         self.assertEqual(len(configs), 7)
 
-    def test_signed_bundle_roundtrip_and_tamper_rejection(self):
+    def test_bundle_roundtrip_and_tamper_rejection(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             tool = ROOT/'scripts/catalogue-bundle.py'
@@ -54,15 +54,11 @@ class CatalogueTests(unittest.TestCase):
             document = json.loads((root/'bundle/index.json').read_text())
             self.assertEqual(len(document['apps']), 8)
             self.assertFalse(any(app['tested'] for app in document['apps']))
-            for args in [('keygen', root/'key.pem', root/'key.pub'),
-                         ('sign',root/'bundle','--key',root/'key.pem'),
-                         ('verify',root/'bundle','--pub',root/'key.pub')]:
-                result = run(*args)
-                self.assertEqual(result.returncode, 0, result.stderr)
-            index = root/'bundle/index.json'
-            index.write_bytes(index.read_bytes()+b' ')
-            self.assertNotEqual(run('verify',root/'bundle','--pub',root/'key.pub').returncode, 0)
-
+            result = run('verify', root/'bundle')
+            self.assertEqual(result.returncode, 0, result.stderr)
+            document['apps'][0]['manifest'] += '\n'
+            (root/'bundle/index.json').write_text(json.dumps(document))
+            self.assertNotEqual(run('verify', root/'bundle').returncode, 0)
 
 if __name__ == '__main__':
     unittest.main()
