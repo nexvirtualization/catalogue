@@ -1,0 +1,8 @@
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">Radarr catalogue illustration</title>
+  <desc id="desc">Original unofficial film tile illustration. Not the upstream logo.</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#602b9d"/><stop offset="1" stop-color="#ef5d98"/></linearGradient></defs>
+  <rect width="128" height="128" rx="26" fill="url(#bg)"/>
+  <rect x="22" y="30" width="84" height="70" rx="12" fill="#ffbf47"/><path d="M22 50h84v14H22z" fill="#ff7048"/><path d="m27 32 14 18m10-18 14 18m10-18 14 18" stroke="#fff4cf" stroke-width="8"/><circle cx="64" cy="81" r="13" fill="#552a83"/><path d="m61 73 11 8-11 8z" fill="#fff4cf"/>
+</svg>

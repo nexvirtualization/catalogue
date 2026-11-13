@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+x-nex:
+  name: Radarr
+  summary: Manage a standalone movie collection
+  description: >-
+    Movie library manager. For integrated downloads, select the same existing DATA folder on a share as the downloader, or use arr-suite.
+  category: media
+  website: https://radarr.video
+  source: https://github.com/Radarr/Radarr
+  license: GPL-3.0
+  scalable: false
+  tags: [movies, automation]
+  options:
+    PUID:
+      label: User ID
+      help: Numeric UID used by the application. Both storage and any imported files must be writable by this UID or the selected group.
+    PGID:
+      label: Group ID
+      help: Numeric GID used by the application. Match the group allowed to write its storage; Nex does not grant these permissions automatically.
+    TZ:
+      label: Time zone
+      help: IANA time zone name, such as Etc/UTC.
+    PORT:
+      label: Web port
+      help: Published HTTP port. Set up application authentication before allowing other users to connect.
+    CONFIG:
+      label: Configuration
+      help: Persistent settings, database and credentials at /config. Must be writable by the selected UID/GID; back up this folder.
+    DATA:
+      label: Library and downloads
+      help: Media at /data; use /data/movies for the library and /data/downloads for imports. To share with another app, select the same existing folder on the same share. Must be writable by PUID/PGID.
+services:
+  radarr:
+    image: ghcr.io/linuxserver/radarr:6.4.4.10685-ls326@sha256:51a9ac2a9eb47afc833541e5fd6c11b86eb9f810694c22fa2429e3078e9194b2
+    environment:
+      PUID: "${PUID:-1000}"
+      PGID: "${PGID:-1000}"
+      TZ: "${TZ:-Etc/UTC}"
+    ports:
+      - "${PORT:-7878}:7878"
+    volumes:
+      - "${CONFIG}:/config"
+      - "${DATA}:/data"
+    deploy:
+      replicas: 1
