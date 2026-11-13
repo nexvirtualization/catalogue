@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <!-- SPDX-License-Identifier: AGPL-3.0-only -->
+  <title id="title">Download parcels</title>
+  <desc id="desc">Original Nex catalogue illustration, not an official SABnzbd logo. A mint arrow delivers three golden parcels into a coral tray.</desc>
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="#39224f"/>
+  <path d="M64 22v31m-13-12 13 13 13-13" fill="none" stroke="#6de4c4" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="23" y="67" width="23" height="22" rx="4" fill="#ffbd59"/>
+  <rect x="53" y="67" width="23" height="22" rx="4" fill="#ffde85"/>
+  <rect x="83" y="67" width="23" height="22" rx="4" fill="#ffbd59"/>
+  <path d="M34 69v8m30-8v8m30-8v8" stroke="#93533c" stroke-width="4"/>
+  <path d="M22 97v8h84v-8" fill="none" stroke="#ff7c9c" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
