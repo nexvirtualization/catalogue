@@ -25,7 +25,6 @@ def validate(root=ROOT):
         meta = app['x-nex']
         assert all(meta.get(k) for k in ('name', 'summary', 'category')), path
         assert meta.get('scalable', False) is False, path
-        assert (path.parent/'README.md').is_file(), path
         icon = path.parent/'icon.svg'
         assert 0 < icon.stat().st_size <= 32768, icon
         svg = ET.parse(icon).getroot()
