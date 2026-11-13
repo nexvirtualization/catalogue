@@ -1,0 +1,17 @@
+Application logos
+
+Each apps/<id>/icon.svg or icon.png is the application's official logo, copied
+unchanged from its upstream repository (Prowlarr's SVG had editor metadata
+removed). The logos are trademarks of their projects and remain under the
+licence of their upstream repository; they are not covered by this
+repository's AGPL-3.0-only licence.
+
+radarr       https://github.com/Radarr/Radarr/blob/b9afb26be5822fb3e28038f157ac1a0f85611c5b/Logo/Radarr.svg (GPL-3.0)
+sonarr       https://github.com/Sonarr/Sonarr/blob/c018578e4b79ee048575c02d7a8aa2b929e4b837/Logo/Sonarr.svg (GPL-3.0)
+prowlarr     https://github.com/Prowlarr/Prowlarr/blob/d2d1fc0e77664a94b8d3931b7f216eaafd234af4/Logo/Prowlarr.svg (GPL-3.0)
+lidarr       https://github.com/Lidarr/Lidarr/blob/28ab333eafa138a72319e4cd149c965e5a5af3b7/Logo/256.png (GPL-3.0)
+bazarr       https://github.com/morpheus65535/bazarr/blob/bfe4593b04caa16eb4a09c2a233777b0bd7723b6/frontend/public/images/pwa-512x512.png (GPL-3.0)
+qbittorrent  https://github.com/qbittorrent/qBittorrent/blob/d56ce79c99dfffcf43954b81142bc8e7cb81a429/dist/unix/menuicons/scalable/apps/qbittorrent.svg (GPL-2.0-or-later; assets GPL-3.0-or-later)
+sabnzbd      https://github.com/sabnzbd/sabnzbd/blob/b1d844d2d6043ca63fb7268b9945a8bb8705b58b/icons/logo-arrow.svg (GPL-2.0-or-later)
+
+arr-suite's icon is an original catalogue illustration (AGPL-3.0-only).

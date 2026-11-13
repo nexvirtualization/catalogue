@@ -25,11 +25,16 @@ def validate(root=ROOT):
         meta = app['x-nex']
         assert all(meta.get(k) for k in ('name', 'summary', 'category')), path
         assert meta.get('scalable', False) is False, path
-        icon = path.parent/'icon.svg'
+        icons = [p for p in (path.parent/'icon.svg', path.parent/'icon.png') if p.is_file()]
+        assert len(icons) == 1, (path, 'needs exactly one of icon.svg or icon.png')
+        icon = icons[0]
         assert 0 < icon.stat().st_size <= 32768, icon
-        svg = ET.parse(icon).getroot()
-        assert svg.tag == '{http://www.w3.org/2000/svg}svg', icon
-        assert not any(e.tag.endswith(('script', 'foreignObject', 'image')) for e in svg.iter()), icon
+        if icon.suffix == '.png':
+            assert icon.read_bytes().startswith(b'\x89PNG\r\n\x1a\n'), icon
+        else:
+            svg = ET.parse(icon).getroot()
+            assert svg.tag == '{http://www.w3.org/2000/svg}svg', icon
+            assert not any(e.tag.endswith(('script', 'foreignObject', 'image')) for e in svg.iter()), icon
         defaults = {}
         for var, default in REF.findall(text):
             if default:

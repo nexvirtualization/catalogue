@@ -1,12 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
-  <!-- SPDX-License-Identifier: AGPL-3.0-only -->
-  <title id="title">Download parcels</title>
-  <desc id="desc">Original Nex catalogue illustration, not an official SABnzbd logo. A mint arrow delivers three golden parcels into a coral tray.</desc>
-  <rect x="4" y="4" width="120" height="120" rx="28" fill="#39224f"/>
-  <path d="M64 22v31m-13-12 13 13 13-13" fill="none" stroke="#6de4c4" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-  <rect x="23" y="67" width="23" height="22" rx="4" fill="#ffbd59"/>
-  <rect x="53" y="67" width="23" height="22" rx="4" fill="#ffde85"/>
-  <rect x="83" y="67" width="23" height="22" rx="4" fill="#ffbd59"/>
-  <path d="M34 69v8m30-8v8m30-8v8" stroke="#93533c" stroke-width="4"/>
-  <path d="M22 97v8h84v-8" fill="none" stroke="#ff7c9c" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+<svg viewBox="0 0 608 608" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M630.988 320.63V188.324h99.863v-35.62l110.197 101.773L730.85 356.25v-35.62h-99.86z" fill="none" stroke-width="16.62" stroke="#000" transform="matrix(0 2.665 -2.7482 0 1003.016 -1657.67)"/><path d="M121.86 23.913h363.604v266.135h97.89l-279.69 293.667L23.97 290.048h97.89V23.913z" fill="#FFB300" class="logo-arrow-outer"/><path d="M303.664 583.797L122.274 23.975h362.78l-181.39 559.822z" class="logo-arrow-inner" fill="#FFCA28"/></svg>
